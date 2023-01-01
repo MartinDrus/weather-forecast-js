@@ -22,7 +22,6 @@ body{
     
     .current-info{
         height: 30vh;
-        width: 20%;
         border: 1px solid black;
         background-color: bisque;
         padding: 2rem;
@@ -73,20 +72,30 @@ body{
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .panel-left{
-        display: none;
+        width: 5px;
+
+    }
+    .panel-middle{
+        width: 600px;
     }
     .panel-right {
-        display: none;
+        width: 5px;
+
     }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
     .panel-left{
-        display: none;
+        width: 5px;
+
+    }
+    .panel-middle{
+        width: 765px;
     }
     .panel-right {
-        display: none;
+        width: 5px;
+
     }
 }
 
