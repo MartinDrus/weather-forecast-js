@@ -5,15 +5,14 @@ import getCity from './reverseGeocoding';
 
 
 
-export async function getWeather(lat, lon, timezone) {
+export async function getWeather(lat, lon, timezone, posAccuracy) {
 
-    const city = await getCity(lon, lat);
+    const city = await getCity(lon, lat, posAccuracy);
 
-    
     // return axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,surface_pressure,cloudcover,windspeed_10m,soil_temperature_0cm&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,precipitation_hours,winddirection_10m_dominant&current_weather=true&timezone=${timezone}`)
     // return axios.get('https://api.open-meteo.com/v1/forecast?hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,windspeed_10m,soil_temperature_6cm&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&current_weather=true&timeformat=unixtime', 
 
-    return axios.get('https://api.open-meteo.com/v1/forecast?hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,surface_pressure,cloudcover,windspeed_10m,soil_temperature_0cm&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,precipitation_hours,winddirection_10m_dominant&current_weather=true&timeformat=unixtime', 
+    return axios.get('https://api.open-meteo.com/v1/forecast?hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,surface_pressure,cloudcover,windspeed_10m,soil_temperature_0cm&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,precipitation_hours,winddirection_10m_dominant&current_weather=true&timeformat=unixtime',
         {
             params: 
                 {
@@ -23,7 +22,6 @@ export async function getWeather(lat, lon, timezone) {
                 }
         }
     )
-    
     .then(( { data }) => {
         console.log(data);
         return {
@@ -35,7 +33,8 @@ export async function getWeather(lat, lon, timezone) {
     })
 }
 
-function parseCurrentWeather({ current_weather, hourly_units, daily }) {
+function parseCurrentWeather({ current_weather, daily, hourly, hourly_units }) {
+    console.log("🚀 ~ file: weather.js:37 ~ parseCurrentWeather ~ hourly", hourly)
     const {
         temperature: currentTemp,
         windspeed: windSpeed,
@@ -53,6 +52,14 @@ function parseCurrentWeather({ current_weather, hourly_units, daily }) {
         precipitation_sum: [precip],
     } = daily
 
+    const {
+        cloudcover: [cloudCover],
+        soil_temperature_0cm: [soilTemp],
+        relativehumidity_2m: [humidity],
+        surface_pressure: [pressure]
+
+    } = hourly;
+
     return {
         currentTemp: `${Math.round(currentTemp)}${hourly_units.apparent_temperature}`,
         highTemp: `${Math.round(maxTemp)}${hourly_units.apparent_temperature}`,
@@ -64,6 +71,10 @@ function parseCurrentWeather({ current_weather, hourly_units, daily }) {
         windSpeed: `${windSpeed}${hourly_units.windspeed_10m}`,
         windDirection: `${winddirection}°`,
         precip: `${precip}${hourly_units.precipitation}`,
+        cloudCover: `${cloudCover}${hourly_units.cloudcover}`,
+        soilTemp: `${soilTemp}${hourly_units.soil_temperature_0cm}`,
+        humidity: `${humidity}${hourly_units.relativehumidity_2m}`,
+        pressure: `${pressure}${hourly_units.surface_pressure}`,
         iconCode,
     }
 }

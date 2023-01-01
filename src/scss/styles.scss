@@ -154,15 +154,38 @@ body{
             border: 1px solid;
             border-radius: 5px;
 
+            background-color: rgb(17, 189, 228);
+
+
             span {
                 font-size: 1.5rem;
             }
         }
 }
 
-.daily-weather{
+.daily-container{
     height: 30vh;
-    border: solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .daily-card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        padding: 1rem;
+        border: 1px solid;
+        border-radius: 5px;
+        width: 150px;
+
+        margin: 2rem;
+
+        span {
+            font-size: 2rem;
+        }
+    }
 
 }
 

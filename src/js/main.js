@@ -2,13 +2,20 @@
 import { getWeather } from './weather';
 import { ICON_MAP } from './iconMap';
 
-navigator.geolocation.getCurrentPosition(positionSuccess, positionError)
+const findPosOptions = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+};
+
+navigator.geolocation.getCurrentPosition(positionSuccess, positionError, findPosOptions)
 
 function positionSuccess({ coords }) {
     getWeather(
         coords.latitude,
         coords.longitude,
-        Intl.DateTimeFormat().resolvedOptions().timeZone
+        Intl.DateTimeFormat().resolvedOptions().timeZone,
+        coords.accuracy
     )
     .then(renderWeather)
     .catch(e => {
@@ -67,34 +74,48 @@ function renderCurrentWeather(current, city) {
    setValue("current-windspeed", `Wind: ${current.windSpeed}`)
    setValue("current-winddirection", `Richtung: ${current.windDirection}`)
 
-//   setValue("current-wind", current.windSpeed)
-//   setValue("current-precip", current.precip)
 }
 
 
-
-function renderDailyWeather(daily) {
-
+function formatHourlyTimestamp(s) {
+    return `${new Date(s * 1e3).toLocaleString('de-DE').slice(-8, -6)} Uhr`;
 }
 
 const hourlySection = document.querySelector(".hourly-container")
 const hourTemplate = document.querySelector(".hourly-card-template")
 function renderHourlyWeather(hourly) {
     hourlySection.innerHTML = "";
-    console.log(hourly);
-
-
 
     hourly.forEach(hour => {
         const elHourTemplate = hourTemplate.content.cloneNode(true);
 
-        setValue("hourly-hour", `${formatSunRiseSet(hour.timestamp/1000)}`, {parent: elHourTemplate})
+        setValue("hourly-hour", `${formatHourlyTimestamp(hour.timestamp/1000)}`, {parent: elHourTemplate})
         setValue("hourly-humidity", `${hour.humidity}`, {parent: elHourTemplate})
         setValue("hourly-temp", `${hour.temp}`, {parent: elHourTemplate})
 
         hourlySection.appendChild(elHourTemplate)
     })
 
+
+}
+
+function formatDayTimestamp(date) {
+    return new Intl.DateTimeFormat('de-DE', { weekday: 'long' }).format(date);
+}
+
+const dailySection = document.querySelector(".daily-container");
+const dayTemplate = document.querySelector(".daily-card-template");
+function renderDailyWeather(daily) {
+    dailySection.innerHTML = ""
+
+    daily.forEach(day => {
+        const elDayTemplate = dayTemplate.content.cloneNode(true);
+
+        setValue("daily-temp", day.maxTemp, {parent: elDayTemplate})
+        setValue("daily-day", formatDayTimestamp(day.timestamp), {parent: elDayTemplate})
+    
+        dailySection.appendChild(elDayTemplate)
+    })
 
 }
 
