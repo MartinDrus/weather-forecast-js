@@ -1,30 +1,64 @@
 
-import { currentPosition } from './currentPosition'
-console.log("🚀 ~ file: main.js:3 ~ currentPosition", currentPosition)
+import { getWeather } from './weather';
+import { ICON_MAP } from './iconMap';
 
-  
-import fetchCity from './reverseGeocoding'
+navigator.geolocation.getCurrentPosition(positionSuccess, positionError)
+
+function positionSuccess({ coords }) {
+    getWeather(
+        coords.latitude,
+        coords.longitude,
+        Intl.DateTimeFormat().resolvedOptions().timeZone
+    )
+    .then(renderWeather)
+    .catch(e => {
+        console.error(e)
+        alert("Error getting weather")
+    })
+}
+
+function positionError() {
+  alert("There was an error getting your location. Please allow us to use your location and refresh the page.")
+}
 
 
-// const longitude = '8.117036';
-// const latitude = '50.458442';
+function renderWeather({position, current, daily, hourly }) {
+    renderCurrentWeather(current, position)
+    renderDailyWeather(daily)
+    renderHourlyWeather(hourly)
+    document.body.classList.remove('blurred')
+}
+
+function setValue(selector, value, {parent = document} = {}) {
+  parent.querySelector(`[data-${selector}]`).textContent = value;
+}
+
+// function getIconUrl(iconCode) {
+//   return `icons/${ICON_MAP.get(iconCode)}.svg`;
+// }
+
+// const currentIcon = document.querySelector("[data-current-icon]")
+
+function renderCurrentWeather(current, city) {
+
+    console.log(current);
+//   currentIcon.src = getIconUrl(current.iconCode)
+   setValue("current-temp", current.currentTemp)
+   setValue("current-city", city)
+   setValue("current-fl-high", `Gefühlt: ${current.lowFeelsLike} - ${current.highFeelsLike}`)
+//   setValue("current-fl-high", current.highFeelsLike)
+//   setValue("current-fl-low", current.lowFeelsLike)
+//   setValue("current-wind", current.windSpeed)
+//   setValue("current-precip", current.precip)
+}
 
 
-// const longitude = '13.353312';
-// const latitude = '52.466783';
 
+function renderDailyWeather(daily) {
 
-const longitude = '10.091579';
-const latitude = '53.499099';
+}
 
-// const longitude = '12.4060723';
-// const latitude = '51.3467167';
+function renderHourlyWeather(hourly) {
+    console.log(hourly);
 
-let result = await fetchCity(longitude, latitude);
-console.log(result);
-
-console.log("--------------------------");
-console.log("format:");
-console.log(result[0].text);
-console.log(result[3].place_name);
-
+}

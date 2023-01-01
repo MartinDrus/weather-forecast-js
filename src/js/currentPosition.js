@@ -1,4 +1,4 @@
-export const currentPosition = {};
+const currentPosition = {};
 
 const options = {
     enableHighAccuracy: true,

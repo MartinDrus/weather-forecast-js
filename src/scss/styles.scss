@@ -6,22 +6,66 @@
     box-sizing: border-box;
 }
 
+body{
+    background-color: rgb(44, 137, 137);
+}
+
 .header{
     height: 5vh;
 }
 
 
-.current-weather{
+.current-container{
+    display: flex;
     height: 30vh;
-    border: solid;
+    justify-content: center;
+    
+    .current-info{
+        height: 30vh;
+        width: 20%;
+        border: 1px solid black;
+        background-color: bisque;
+        padding: 2rem;
+
+    }
+
+    .panel-left{
+
+    }
+
+    .panel-middle{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 46pt;
+
+        span[data-current-city] {
+            font-size: 18pt;
+        }
+        span[data-current-fl-high] {
+            margin-top: 0.5em;
+            font-size: 16pt;
+        }
+    }
+
+    .panel-right{
+
+    }
 }
 
 .daily-weather{
     height: 30vh;
-    border: solid;
 }
 
 .hourly-weather{
     height: 30vh;
-    border: solid;
+}
+
+////---------HELPER----------------
+
+
+.border{
+    height: max-content;
+    border: 1px solid black;
 }
