@@ -8,8 +8,6 @@ import getCity from './reverseGeocoding';
 export async function getWeather(lat, lon, timezone) {
 
     const city = await getCity(lon, lat);
-    console.log("🚀 ~ file: weather.js:11 ~ getWeather ~ locationBody", city)
-
 
     
     // return axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,surface_pressure,cloudcover,windspeed_10m,soil_temperature_0cm&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,precipitation_hours,winddirection_10m_dominant&current_weather=true&timezone=${timezone}`)
@@ -96,5 +94,5 @@ function parseHourlyWeather({ hourly, hourly_units, current_weather }) {
             soilTemp: `${hourly.soil_temperature_0cm[index]}${hourly_units.soil_temperature_0cm}`
 
         }
-    }).filter(({ timestamp }) => timestamp >= current_weather.time * 1000)
+    }).filter(({ timestamp }) => timestamp >= current_weather.time * 1000 && timestamp <= (current_weather.time * 1000 + 82800000))
 }

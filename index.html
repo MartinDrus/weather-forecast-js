@@ -18,25 +18,48 @@
   </header>
   <main>
     <section class="current-container ">
-      <div class="current-info panel-left">
-        
+      <div class="current-info panel-left displayNone">
+        <span data-current-pressure ></span>
+        <span data-current-sunrise></span>
+        <span data-current-sunset></span>
       </div>
       <div class="current-info panel-middle">
         <span data-current-temp></span>
-        <span data-current-city></span>
         <span data-current-fl-high></span>
+        <span data-current-city></span>
+
+        <button class="current-detail-btn" type="button" id="open-left"></button>
+        <button class="current-detail-btn" type="button" id="open-right"></button>
+
+
       </div>
-      <div class="current-info panel-right">
-        
+      <div class="current-info panel-right displayNone">
+        <span data-current-windspeed></span>
+        <span data-current-winddirection=""></span>
+
       </div>
+
+    </section>
+    <section class="hourly-container">
+      
+      
+      <template class="hourly-card-template">
+        <div class="hourly-card">
+
+
+          <span data-hourly-hour></span>
+          <span data-hourly-temp></span>
+          <span data-hourly-humidity></span>
+
+
+        </div>
+      </template>
 
     </section>
     <section class="daily-weather">
 
     </section>
-    <section class="hourly-weather">
 
-    </section>
 
   </main>
   <footer>

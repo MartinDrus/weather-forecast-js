@@ -7,7 +7,9 @@ import axios from "axios";
 async function getCity(longitude, latitude){
     return axios.get(`https://api.maptiler.com/geocoding/${longitude},${latitude}.json?key=zB69YT8Zm0QVVtdpKiu1`)
     .then(({data}) => {
-        return data.features.length > 2 ? data.features[3].place_name : "";
+        // return data.features.length > 2 ? data.features[3].place_name : "";
+        return data.features.length > 2 ? data.features[0].text : "";
+
     })
     .catch(e => {
         console.error(e)
